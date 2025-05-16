@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y wget curl unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Litestreamのインストール
-RUN curl -Lo litestream.tar.gz https://github.com/benbjohnson/litestream/releases/latest/download/litestream-linux-amd64-static.tar.gz \
+# Litestreamのインストール - GitHub Releaseから直接バイナリをダウンロード
+RUN curl -L https://github.com/benbjohnson/litestream/releases/download/v0.3.13/litestream-v0.3.13-linux-amd64.tar.gz -o litestream.tar.gz \
     && tar -xzf litestream.tar.gz \
     && mv litestream /usr/local/bin/ \
     && rm litestream.tar.gz

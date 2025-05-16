@@ -1,0 +1,28 @@
+steps:
+- name: gcr.io/cloud-builders/docker
+  args: ["build", "-t", "gcr.io/$PROJECT_ID/cr-db", "."]
+
+- name: gcr.io/cloud-builders/docker
+  args: ["push", "gcr.io/$PROJECT_ID/cr-db"]
+
+- name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  entrypoint: gcloud
+  args:
+    - run
+    - deploy
+    - cr-db
+    - --image=gcr.io/$PROJECT_ID/cr-db
+    - --region=asia-northeast1
+    - --platform=managed
+    - --allow-unauthenticated
+    - --service-account=cr-db-sa@$PROJECT_ID.iam.gserviceaccount.com
+    - --set-env-vars=RECOVER_DB=true,BUCKET_NAME=cr-db-storage
+    - --memory=512Mi
+    - --cpu=1
+    - --concurrency=80
+    - --max-instances=10
+    - --min-instances=0
+
+images:
+  - gcr.io/$PROJECT_ID/cr-db
+

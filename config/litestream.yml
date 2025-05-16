@@ -1,0 +1,5 @@
+dbs:
+  - path: /app/database.db
+    replicas:
+      - url: gs://cr-db-storage/database
+        sync-interval: 10s  # 同期間隔
